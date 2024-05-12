@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Image Processing Server</title>
+	<style>
+		body {
+			text-align: center;
+		}
+
+		button {
+			margin: 10px;
+			padding: 15px 30px;
+			font-size: 18px;
+		}
+
+		#uploadedImage {
+			max-width: 20%;
+			height: auto;
+			display: none;
+			margin: 20px auto;
+		}
+
+		#downloadBtn {
+			max-width: 20%;
+			height: auto;
+			margin: 20px auto;
+			display: none;
+		}
+
+		#filterButtons {
+			display: none;
+		}
+
+			#filterButtons.visible {
+				display: flex;
+				justify-content: center;
+			}
+
+			#filterButtons form {
+				margin: 0 10px;
+			}
+	</style>
+</head>
+<body>
+	<h2>Image Processing Server</h2>
+
+	<button onclick="document.getElementById('imageInput').click()">Upload Image</button>
+
+	<input type="file" id="imageInput" style="display: none;">
+	<img src="" id="uploadedImage" alt="Uploaded_Image">
+
+	<div id="filterButtons">
+
+		<form id="filter_gauss" method="POST" action="/filter_gauss" onsubmit="submitForm(event, 'filter_gauss')">
+			<button type="submit">Apply Gaussian Filter</button>
+		</form>
+
+		<form id="scale_image" method="POST" action="/scale_image" onsubmit="submitForm(event, 'scale_image')">
+			<button type="submit">Apply scale image</button>
+		</form>
+
+		<form id="align_text" method="POST" action="/align_text" onsubmit="submitForm(event, 'align_text')">
+			<button type="submit">Align Text</button>
+		</form>
+
+		<form id="rotate_image" method="POST" action="/rotate_image" onsubmit="submitForm(event, 'rotate_image')">
+			<button type="submit">Rotate Image</button>
+		</form>
+
+		<form id="black_white" method="POST" action="/black_white" onsubmit="submitForm(event, 'black_white')">
+			<button type="submit">Black and white filter</button>
+		</form>
+
+	</div>
+
+	<button id="downloadBtn">Download Image</button>
+
+	<script>
+
+		// Функция для отправки файла на сервер
+		function uploadImage() {
+			var fileInput = document.getElementById('imageInput');
+			var file = fileInput.files[0]; // Получаем выбранный файл
+
+			var formData = new FormData(); // Создаем объект FormData для передачи файла
+
+			formData.append('imageFile', file); // Добавляем файл в FormData
+
+			fetch('/upload_image', {
+				method: 'POST',
+				body: formData
+			})
+				.then(response => {
+					if (response.ok) {
+						console.log("File uploaded successfully");
+					} else {
+						throw new Error('Network response was not ok.');
+					}
+				})
+				.catch(error => console.error('There was a problem with the fetch operation:', error));
+		}
+
+		// Обработчик события для кнопки "Upload Image"
+		// Отображаем выбор файла при нажатии на кнопку загрузки изображения
+		document.getElementById('imageInput').addEventListener('change', function () {
+			var file = this.files[0];
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				var img = document.getElementById('uploadedImage');
+				img.src = e.target.result;
+				img.style.display = 'block';
+				document.getElementById('filterButtons').classList.add('visible');
+				document.getElementById('downloadBtn').style.display = 'block';
+			};
+			reader.readAsDataURL(file);
+			// После выбора файла отправляем его на сервер
+			uploadImage();
+		});
+
+
+		function submitForm(event, formId) {
+			event.preventDefault(); // Предотвращаем перезагрузку страницы
+			var form = document.getElementById(formId);
+			var formData = new FormData(form);
+			fetch(form.action, {
+				method: 'POST',
+				body: formData
+			})
+				.then(response => {
+					if (response.ok) {
+						console.log("Form submitted successfully");
+					} else {
+						throw new Error('Network response was not ok.');
+					}
+				})
+				.catch(error => console.error('There was a problem with the fetch operation:', error));
+		}
+	</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,8 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include "../include/Server.h"
+
+void sendHelloOpportunitiesList(int ClientSocket);
+
