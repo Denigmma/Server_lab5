@@ -10,7 +10,11 @@ project ("ClientServer")
 
 add_executable (ClientServer  
 "Source/main.cpp"
- "Include/Server.h" "Source/Server.cpp" "Source/SendGetFunc.cpp" "Include/SendGetFunc.h")
+ "Include/Server.h" 
+ "Source/Server.cpp" 
+ "Source/SendGetFunc.cpp" 
+ "Include/SendGetFunc.h"
+ )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ClientServer PROPERTY CXX_STANDARD 20)
