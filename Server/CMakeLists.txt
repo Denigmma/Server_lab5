@@ -6,9 +6,9 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("Server_lab5")
+project ("Server")
 
-add_executable (Server_lab5 
+add_executable (Server
 "Source/main.cpp" 
 "Include/Server.h" 
 "Source/Server.cpp" 
@@ -22,10 +22,8 @@ add_executable (Server_lab5
 "source/SendGetFile.cpp" 
 "source/FunctionsServer/align.cpp" 
 "source/FunctionsServer/rotate.cpp" 
- 
 "include/FunctionsServerh/align.h" 
 "include/FunctionsServerh/rotate.h"
-
 "include/FunctionsServerh/blackwhite.h"
 "source/FunctionsServer/blackwhite.cpp" 
 "include/FunctionsServerh/stb_image_write.h"
@@ -33,5 +31,5 @@ add_executable (Server_lab5
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET Server_lab5 PROPERTY CXX_STANDARD 20)
+  set_property(TARGET Server PROPERTY CXX_STANDARD 20)
 endif()
